@@ -29,7 +29,7 @@ export class AuthService {
 
     public async register(input: UserRegisterInputModel): Promise<UserTokenViewModel> {
 
-        const user = User.create({
+        const user = User.createModel({
             name: input.name,
             email: input.email,
             password: bcrypt.hashSync(input.password)

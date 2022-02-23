@@ -5,9 +5,9 @@ import { Entity } from "../abstraction/entity";
     tableName: 'Users',
     timestamps: true
 })
-export class User extends Entity<User> {
+export class User extends Entity {
 
-    public static create(input: {
+    public static createModel(input: {
         name: string;
         email: string;
         password: string;
