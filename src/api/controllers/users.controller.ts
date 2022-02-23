@@ -17,22 +17,4 @@ UsersController.get('/logged', checkToken, async (req: Request, res: Response, n
     }
 });
 
-UsersController.put('/address', checkToken, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const address = await userService.updateAddress(req.body, TokenHelper.getPayload(res).userId);
-        res.json(address);
-    } catch (error) {
-        next(error);
-    }
-});
-
-UsersController.put('/', checkToken, async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const user = await userService.update(req.body, TokenHelper.getPayload(res).userId);
-        res.json(user);
-    } catch (error) {
-        next(error);
-    }
-});
-
 export { UsersController };

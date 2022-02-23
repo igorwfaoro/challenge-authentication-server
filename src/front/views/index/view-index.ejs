@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <?- include('../common/head', { title: 'IWF Auth' }) ?>
+
+    <link rel="stylesheet"
+          href="/css/view-index.css">
+</head>
+
+<body>
+
+    <div id="viewIndex">
+
+        <div class="content"
+             v-if="loggedUser">
+            <div class="name">{{ loggedUser.name }}</div>
+            <div class="email">{{ loggedUser.email }}</div>
+            <div class="created-at">{{ loggedUser.createdAt }}</div>
+            <div class="logout">
+                <button v-on:click="logout">Logout</button>
+            </div>
+        </div>
+
+    </div>
+
+    <?- include('../common/scripts')?>
+
+    <script type="module">
+
+        import { AppStorage } from '/js/components/storage.js';
+        import { Loader } from '/js/components/loader.js';
+        import { Toast } from '/js/components/toast.js';
+        import { HttpClient } from '/js/components/http-client.js';
+
+        const viewIndex = new Vue({
+            el: '#viewIndex',
+
+            data: {
+                loggedUser: null
+            },
+
+            created() {
+                if (!AppStorage.data?.token) {
+                    location.href = `${location.origin}/login`;
+                    return;
+                }
+
+                Loader.open();
+                HttpClient.get('/api/users/logged').then(response => {
+                    Loader.dismiss();
+                    this.loggedUser = response.data;
+                }).catch(error => {
+                    Loader.dismiss();
+                    Toast.showHttpError(error);
+                });
+            },
+
+            methods: {
+                logout() {
+                    AppStorage.clearData();
+                    location.href = `${location.origin}/login`;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

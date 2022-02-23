@@ -4,7 +4,7 @@ import "reflect-metadata";
 import * as express from 'express';
 import * as cors from 'cors';
 import * as moment from 'moment-timezone'
-import { routes } from './src/routes';
+import { router } from './src/router';
 import { CONFIG } from './src/config';
 import { onError } from "./src/common/functions/on-error";
 import { ServicesCollection } from "./src/providers";
@@ -25,15 +25,14 @@ moment.tz.setDefault('UTC');
 
 ejs.delimiter = '?';
 app.set('view engine', 'ejs');
-app.set('views', `${process.cwd()}/src/views`);
+app.set('views', `${process.cwd()}/src/front/views`);
 
-app.use(express.static(`${process.cwd()}/src/public`, {
+app.use(express.static(`${process.cwd()}/src/front/assets`, {
     lastModified: true,
     etag: false
 }));
 
-
-app.use(routes);
+app.use(router);
 
 ServicesCollection.resolve(Database);
 

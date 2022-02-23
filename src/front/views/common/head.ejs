@@ -1,0 +1,38 @@
+<? const pageTitle = title.toLowerCase() != 'iwf auth' ? `${title} | IWF Auth` : title; ?>
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
+
+<!-- Fav icon -->
+<!-- <link rel="shortcut icon"
+      type="image/svg"
+      href="/images/logo-favicon.svg" /> -->
+
+<title>
+      <?= pageTitle ?>
+</title>
+
+<link rel="stylesheet"
+      href="/css/bootstrap.css">
+
+<link rel="stylesheet"
+      href="/css/main.css">
+
+<meta name="theme-color"
+      content="#004999">
+
+<script src="/js/moment/moment.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<script type="module">
+      import { AppStorage } from '/js/components/storage.js';
+      
+      AppStorage.loadData();
+      
+      const lang = String(window.navigator.userLanguage || window.navigator.language);
+      moment.locale(lang);
+</script>

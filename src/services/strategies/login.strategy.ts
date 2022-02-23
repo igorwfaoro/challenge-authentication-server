@@ -1,6 +1,4 @@
 import { WhereOptions } from "sequelize/types";
-import { Address } from "../../models/entities/address";
-import { Promotion } from "../../models/entities/promotion";
 import { User } from "../../models/entities/user";
 import { LoginInputModel } from "../../api/models/input-models/login.input-model";
 import { UserTokenViewModel } from "../../api/models/view-models/user-token.view-model";
@@ -8,12 +6,11 @@ import { Strategy } from "../abstraction/strategy";
 import * as bcrypt from 'bcryptjs';
 import { AuthException } from "../../common/exceptions/auth.exception";
 import { UserViewModel } from "../../api/models/view-models/user.view-model";
-import { SalePoint } from "../../models/entities/sale-point";
-import { UserPermissionException } from "../../common/exceptions/user-permission.exception";
+import { CustomException } from "../../common/exceptions/setup/custom.exception";
 
 export enum LoginStrategyType {
-    MANAGER = 'MANAGER',
-    NORMAL_USER = 'NORMAL_USER'
+    JWT = 'JWT',
+    GOOGLE = 'GOOGLE'
 }
 
 export class LoginStrategy extends Strategy<LoginInputModel, Promise<UserTokenViewModel>> {
@@ -22,10 +19,10 @@ export class LoginStrategy extends Strategy<LoginInputModel, Promise<UserTokenVi
         type: string,
         private makeToken: (user: User) => string
     ) {
-        super(type, [LoginStrategyType.MANAGER, LoginStrategyType.NORMAL_USER], LoginStrategyType.NORMAL_USER);
+        super(type, Object.values(LoginStrategyType));
     }
 
-    public async [LoginStrategyType.MANAGER](input: LoginInputModel): Promise<UserTokenViewModel> {
+    public async [LoginStrategyType.JWT](input: LoginInputModel): Promise<UserTokenViewModel> {
 
         const user = await this.getUser({
             email: input.email
@@ -34,12 +31,6 @@ export class LoginStrategy extends Strategy<LoginInputModel, Promise<UserTokenVi
         if (!user)
             throw new AuthException('Usuário ou senha inválida');
 
-        if (!user.isManager)
-            throw new UserPermissionException('Usuário não tem permissão');
-
-        if (!user.salePointId)
-            throw new UserPermissionException('Usuário não está vinculado a um ponto de venda');
-
         this.validatePassword(input.password, user.password);
 
         return {
@@ -48,36 +39,12 @@ export class LoginStrategy extends Strategy<LoginInputModel, Promise<UserTokenVi
         };
     }
 
-    public async [LoginStrategyType.NORMAL_USER](input: LoginInputModel): Promise<UserTokenViewModel> {
-
-        const user = await this.getUser({ email: input.email });
-
-        if (!user)
-            throw new AuthException('Usuário ou senha inválida');
-
-        this.validatePassword(input.password, user.password);
-
-        return {
-            user: UserViewModel.fromEntity(user),
-            token: this.makeToken(user)
-        };
+    public async [LoginStrategyType.GOOGLE](input: LoginInputModel): Promise<UserTokenViewModel> {
+        throw new CustomException(500, 'Not implemented');
     }
 
     private async getUser(where: WhereOptions): Promise<User> {
-
-        return await User.findOne({
-            where,
-            include: [
-                {
-                    model: Address,
-                    as: 'address'
-                },
-                {
-                    model: SalePoint,
-                    as: 'salePoint'
-                }
-            ]
-        });
+        return await User.findOne({ where });
     }
 
     private validatePassword(inputPassword: string, hash: string): void {

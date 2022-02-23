@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <?- include('../common/head', { title: 'Login' }) ?>
+
+    <link rel="stylesheet"
+          href="/css/view-login.css">
+</head>
+
+<body>
+
+    <div id="viewLogin">
+        <h1>Login</h1>
+
+        <form v-on:submit="login">
+
+            <input type="text"
+                   v-model="form.email.value"
+                   :required="form.email.required">
+
+            <br>
+
+            <input type="password"
+                   v-model="form.password.value"
+                   :required="form.password.required">
+
+            <br>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <?- include('../common/scripts')?>
+
+    <script type="module">
+
+        import { AppStorage } from '/js/components/storage.js';
+        import { Loader } from '/js/components/loader.js';
+        import { Toast } from '/js/components/toast.js';
+        import { HttpClient } from '/js/components/http-client.js';
+
+        const viewLogin = new Vue({
+            el: '#viewLogin',
+
+            data: {
+                title: 'Login',
+                form: {
+                    email: { value: null, required: true },
+                    password: { value: null, required: true }
+                }
+            },
+
+            created() {
+
+            },
+
+            methods: {
+                login(e) {
+                    e.preventDefault();
+
+                    Loader.open();
+                    HttpClient.post('/api/auth/login', {
+                        email: this.form.email.value,
+                        password: this.form.password.value
+                    }, {
+                        params: {
+                            strategy: 'JWT'
+                        }
+                    }).then(response => {
+                        Loader.dismiss();
+
+                        AppStorage.data.user = response.data.user;
+                        AppStorage.data.token = response.data.token;
+                        AppStorage.saveData()
+
+                        location.href = `${location.origin}`;
+                    }).catch(error => {
+                        Loader.dismiss();
+                        Toast.showHttpError(error);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

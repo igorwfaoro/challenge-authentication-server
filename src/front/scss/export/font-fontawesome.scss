@@ -1,0 +1,8 @@
+@import "../fontawesome/variables";
+@import "../fontawesome/mixins";
+
+$fa-font-path: '/webfonts/fontawesome';
+
+@import "../fontawesome/fontawesome.scss";
+@import "../fontawesome/brands.scss";
+@import "../fontawesome/solid.scss";
