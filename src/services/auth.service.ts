@@ -9,7 +9,7 @@ import { UserViewModel } from "../api/models/view-models/user.view-model";
 import { UserTokenViewModel } from "../api/models/view-models/user-token.view-model";
 import * as bcrypt from 'bcryptjs';
 import { Transaction } from "sequelize/types";
-import { Database } from "../data/database-config";
+import { Database } from "../database-config";
 import { LoginStrategy } from "./strategies/login.strategy";
 import { UserRegisterInputModel } from "../api/models/input-models/user-register";
 
@@ -30,29 +30,18 @@ export class AuthService {
 
     public async register(input: UserRegisterInputModel): Promise<UserTokenViewModel> {
 
-        const transaction: Transaction = await this._database.sequelize.transaction();
+        const user = User.create({
+            name: input.name,
+            email: input.email,
+            password: bcrypt.hashSync(input.password)
+        });
 
-        try {
+        await user.save();
 
-            const user = User.create({
-                name: input.name,
-                email: input.email,
-                password: bcrypt.hashSync(input.password)
-            });
-
-            await user.save();
-
-            await transaction.commit();
-
-            return {
-                user: UserViewModel.fromEntity(user),
-                token: this.makeToken(user)
-            };
-
-        } catch (error) {
-            await transaction.rollback();
-            throw error;
-        }
+        return {
+            user: UserViewModel.fromEntity(user),
+            token: this.makeToken(user)
+        };
     }
 
     public async refresh(tokenPayload: TokenPayload) {

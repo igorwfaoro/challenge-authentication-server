@@ -1,7 +1,6 @@
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { Includeable } from "sequelize";
 import { NotFoundException } from "../common/exceptions/not-found.exception";
-import { Database } from "../data/database-config";
 import { User } from "../models/entities/user";
 import { UserViewModel } from "../api/models/view-models/user.view-model";
 

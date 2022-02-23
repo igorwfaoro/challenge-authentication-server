@@ -8,7 +8,7 @@ import { router } from './src/router';
 import { CONFIG } from './src/config';
 import { onError } from "./src/common/functions/on-error";
 import { ServicesCollection } from "./src/providers";
-import { Database } from "./src/data/database-config";
+import { Database } from "./src/database-config";
 import * as ejs from 'ejs';
 
 console.log('Initializing...');
