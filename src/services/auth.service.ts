@@ -8,7 +8,6 @@ import { User } from "../models/entities/user";
 import { UserViewModel } from "../api/models/view-models/user.view-model";
 import { UserTokenViewModel } from "../api/models/view-models/user-token.view-model";
 import * as bcrypt from 'bcryptjs';
-import { Transaction } from "sequelize/types";
 import { Database } from "../database-config";
 import { LoginStrategy } from "./strategies/login.strategy";
 import { UserRegisterInputModel } from "../api/models/input-models/user-register";
