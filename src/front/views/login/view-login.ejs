@@ -50,10 +50,6 @@
                 }
             },
 
-            created() {
-
-            },
-
             methods: {
                 login(e) {
                     e.preventDefault();
@@ -62,10 +58,6 @@
                     HttpClient.post('/api/auth/login', {
                         email: this.form.email.value,
                         password: this.form.password.value
-                    }, {
-                        params: {
-                            strategy: 'JWT'
-                        }
                     }).then(response => {
                         Loader.dismiss();
 

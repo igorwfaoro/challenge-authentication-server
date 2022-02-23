@@ -6,11 +6,9 @@ import { Strategy } from "../abstraction/strategy";
 import * as bcrypt from 'bcryptjs';
 import { AuthException } from "../../common/exceptions/auth.exception";
 import { UserViewModel } from "../../api/models/view-models/user.view-model";
-import { CustomException } from "../../common/exceptions/setup/custom.exception";
 
 export enum LoginStrategyType {
-    JWT = 'JWT',
-    GOOGLE = 'GOOGLE'
+    JWT = 'JWT'
 }
 
 export class LoginStrategy extends Strategy<LoginInputModel, Promise<UserTokenViewModel>> {
@@ -19,7 +17,7 @@ export class LoginStrategy extends Strategy<LoginInputModel, Promise<UserTokenVi
         type: string,
         private makeToken: (user: User) => string
     ) {
-        super(type, Object.values(LoginStrategyType));
+        super(type, Object.values(LoginStrategyType), LoginStrategyType.JWT);
     }
 
     public async [LoginStrategyType.JWT](input: LoginInputModel): Promise<UserTokenViewModel> {
@@ -37,10 +35,6 @@ export class LoginStrategy extends Strategy<LoginInputModel, Promise<UserTokenVi
             user: UserViewModel.fromEntity(user),
             token: this.makeToken(user)
         };
-    }
-
-    public async [LoginStrategyType.GOOGLE](input: LoginInputModel): Promise<UserTokenViewModel> {
-        throw new CustomException(500, 'Not implemented');
     }
 
     private async getUser(where: WhereOptions): Promise<User> {
