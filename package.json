@@ -10,7 +10,8 @@
     "build-css": "node-sass src/front/scss/export -o src/front/assets/css -q --output-style compressed",
     "watch-css": "node-sass -w src/front/scss/export -o src/assets/css -q --output-style compressed",
     "build": "npm run build-css & tsc",
-    "prod": "node dist/app.js"
+    "prod": "node dist/app.js",
+    "start": "npm run prod"
   },
   "repository": {
     "type": "git",
