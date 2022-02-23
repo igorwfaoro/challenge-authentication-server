@@ -1,4 +1,0 @@
-export enum GetProductErrorType {
-    OUTSIDE_AREA = 'OUTSIDE_AREA',
-    OUTSIDE_OFFICE_HOURS = 'OUTSIDE_OFFICE_HOURS'
-}

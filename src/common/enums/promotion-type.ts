@@ -1,4 +1,0 @@
-export enum PromotionType {
-    DISCOUNT_PERCENTAGE = 'DISCOUNT_PERCENTAGE',
-    DISCOUNT_VALUE = 'DISCOUNT_VALUE'
-}
