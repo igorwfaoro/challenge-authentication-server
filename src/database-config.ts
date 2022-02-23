@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
-import { CONFIG } from "../config";
+import { CONFIG } from "./config";
 import { Sequelize } from 'sequelize-typescript';
-import { User } from "../models/entities/user";
+import { User } from "./models/entities/user";
 
 @injectable()
 export class Database {
