@@ -2,17 +2,26 @@
 @import "../bootstrap/variables";
 @import "../bootstrap/mixins";
 
-$primary: #004999;
+:root {
+  --blue-800: #12192e;
+  --blue-700: #111c37;
+  --blue-600: #182341;
+  --blue-500: #1a2545;
+  --green-600: #00a86b;
+  --white-800: #faebd7;
+}
+
+$primary: #12192e;
 
 $theme-colors: (
-    "primary": $primary,
-    "secondary": $secondary,
-    "success": $success,
-    "info": $info,
-    "warning": $warning,
-    "danger": $danger,
-    "light": $light,
-    "dark": $dark,
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark,
 );
 
 $container-max-widths: (
@@ -20,7 +29,7 @@ $container-max-widths: (
   md: 720px,
   lg: 960px,
   xl: 1140px,
-  xxl: 1142px
+  xxl: 1142px,
 );
 
 @import "../bootstrap/bootstrap.scss";

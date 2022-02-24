@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run build-css & ts-node app.ts",
-    "dev:watch": "npm run build-css & (npm run watch-css | npm run watch-code)",
+    "dev": "npm run build-css | ts-node app.ts",
+    "dev:watch": "npm run build-css | npm run watch-css | npm run watch-code",
     "watch-code": "ts-node-dev app.ts",
     "build-css": "node-sass src/front/scss/export -o src/front/assets/css -q --output-style compressed",
-    "watch-css": "node-sass -w src/front/scss/export -o src/assets/css -q --output-style compressed",
-    "build": "npm run build-css & tsc",
+    "watch-css": "node-sass -w src/front/scss/export -o src/front/assets/css -q --output-style compressed",
+    "build": "npm run build-css | tsc",
     "prod": "node dist/app.js",
     "start": "npm run prod"
   },
