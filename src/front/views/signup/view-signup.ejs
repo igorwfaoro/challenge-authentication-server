@@ -1,19 +1,19 @@
 <html>
 
 <head>
-    <?- include('../common/head', { title: 'Login' }) ?>
+    <?- include('../common/head', { title: 'Signup' }) ?>
 
     <link rel="stylesheet"
-          href="/css/view-login.css">
+          href="/css/view-signup.css">
 </head>
 
 <body>
 
-    <div id="viewLogin">
+    <div id="viewSignup">
 
         <div class="bg">
 
-            <div class="container login">
+            <div class="container signup">
                 <div class="row content">
                     <div class="col-md-3">
                         <div class="box">
@@ -27,39 +27,64 @@
                                 </div>
                             </div>
 
-                            <form v-on:submit="login">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="signup-title">
+                                        <a href="/login">
+                                            <i class="fas fa-arrow-left"></i>
+                                        </a>
+                                        <span>Signup</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form v-on:submit="signup">
 
                                 <div class="row">
+
                                     <div class="col-12">
                                         <div class="input">
-                                            <img src="/images/username-logo.svg">
+                                            <input type="text"
+                                                   placeholder="Name"
+                                                   v-model="form.name.value"
+                                                   :required="form.name.required">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="input">
                                             <input type="email"
                                                    placeholder="Email"
                                                    v-model="form.email.value"
                                                    :required="form.email.required">
                                         </div>
                                     </div>
+
                                     <div class="col-12">
                                         <div class="input">
-                                            <img src="/images/password-logo.svg">
-                                            <input type="password"
+                                            <input :type="form.password.show ? 'text' : 'password'"
                                                    placeholder="Password"
                                                    v-model="form.password.value"
                                                    :required="form.password.required">
                                         </div>
+                                        <div class="form-check show-password">
+                                            <input class="form-check-input"
+                                                   type="checkbox"
+                                                   id="showPasswordCheck"
+                                                   v-on:change="showPassword">
+                                            <label class="form-check-label"
+                                                   for="showPasswordCheck">
+                                                Show password
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="col-12 forgot-password">
-                                        <a href="">Forgot password?</a>
-                                    </div>
+
                                 </div>
 
                                 <div class="row">
                                     <div class="col-12 buttons">
                                         <button type="submit"
-                                                class="btn btn-light">Login</button>
-
-                                        <a href="/signup"
-                                           class="btn btn-light signup">Signup</a>
+                                                class="btn btn-light">Signup</button>
                                     </div>
                                 </div>
                             </form>
@@ -87,22 +112,23 @@
         const HttpClient = createHttpClient();
 
         const viewLogin = new Vue({
-            el: '#viewLogin',
+            el: '#viewSignup',
 
             data: {
-                title: 'Login',
                 form: {
+                    name: { value: null, required: true },
                     email: { value: null, required: true },
-                    password: { value: null, required: true }
+                    password: { value: null, required: true, show: false }
                 }
             },
 
             methods: {
-                login(e) {
+                signup(e) {
                     e.preventDefault();
 
                     Loader.open();
-                    HttpClient.post('/api/auth/login', {
+                    HttpClient.post('/api/auth/register', {
+                        name: this.form.name.value,
                         email: this.form.email.value,
                         password: this.form.password.value
                     }).then(response => {
@@ -117,6 +143,10 @@
                         Loader.dismiss();
                         Toast.showHttpError(error);
                     });
+                },
+
+                showPassword(event) {
+                    this.form.password.show = event.target.checked;
                 }
             }
         });

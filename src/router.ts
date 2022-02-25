@@ -4,8 +4,9 @@ import { VERSION } from "../version";
 import { IndexController } from "./front/controllers/index.controller";
 import { LoginController } from "./front/controllers/login.controller";
 import { UsersController } from "./api/controllers/users.controller";
+import { SignupController } from "./front/controllers/signup.controller";
 
-const router = Router(); 
+const router = Router();
 
 // api
 router.get('/api', (req, res) => res.json({
@@ -18,5 +19,6 @@ router.use('/api/users', UsersController);
 // front
 router.use('/', IndexController);
 router.use('/login', LoginController);
+router.use('/signup', SignupController);
 
 export { router };

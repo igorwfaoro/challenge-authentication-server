@@ -16,7 +16,7 @@ export class MessagingService {
     public async sendEmail(options: EmailOptions): Promise<any> {
 
         if (!options.subject)
-            options.subject = 'Messaging from IWF Authentication Server';
+            options.subject = 'Messaging from Jade Dragon Authentication Server';
 
         const transporter = nodemailer.createTransport({
             service: CONFIG.EMAIL_SERVICE,
