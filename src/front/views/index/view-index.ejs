@@ -42,11 +42,13 @@
         import { createLoader } from '/js/components/loader.js';
         import { createToast } from '/js/components/toast.js';
         import { createHttpClient } from '/js/components/http-client.js';
+        import { createRouter } from '/js/components/router.js';
 
         const AppStorage = createAppStorage();
         const Loader = createLoader(document);
         const Toast = createToast(document);
         const HttpClient = createHttpClient();
+        const Router = createRouter();
 
         const viewIndex = new Vue({
             el: '#viewIndex',
@@ -57,28 +59,41 @@
 
             created() {
                 if (!AppStorage.getData()?.token) {
-                    location.href = `${location.origin}/login`;
+                    Router.navigate('/login');
                     return;
                 }
 
                 Loader.open();
-                HttpClient.get('/api/users/logged').then(response => {
+                HttpClient.post('/api/auth/refresh').then(response => {
                     Loader.dismiss();
-                    this.loggedUser = {
-                        ...response.data,
-                        createdAtFormatted: moment.utc(response.data.createdAt).local().calendar().toLowerCase()
-                    };
+                    this.getLoggedUser();
                 }).catch(error => {
                     Loader.dismiss();
                     Toast.showHttpError(error);
+                    setTimeout(() => this.logout(), 2000);
                 });
             },
 
             methods: {
                 logout() {
                     AppStorage.clearData();
-                    location.href = `${location.origin}/login`;
-                }
+                    Router.navigate('/login');
+                },
+
+                getLoggedUser() {
+
+                    Loader.open();
+                    HttpClient.get('/api/users/logged').then(response => {
+                        Loader.dismiss();
+                        this.loggedUser = {
+                            ...response.data,
+                            createdAtFormatted: moment.utc(response.data.createdAt).local().calendar().toLowerCase()
+                        };
+                    }).catch(error => {
+                        Loader.dismiss();
+                        Toast.showHttpError(error);
+                    });
+                },
             }
         });
     </script>

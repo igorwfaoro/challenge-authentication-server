@@ -35,4 +35,13 @@ AuthController.post('/refresh', checkToken, async (req: Request, res: Response, 
     }
 });
 
+AuthController.post('/forgot-password', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await authService.forgotPassword(req.body);
+        res.json({ ok: true });
+    } catch (error) {
+        next(error);
+    }
+});
+
 export { AuthController };

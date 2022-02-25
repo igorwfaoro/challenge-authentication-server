@@ -28,6 +28,9 @@ export class User extends Entity {
     @Column
     public password: string;
 
+    @Column
+    public resetPasswordKey?: string;
+
     @AllowNull(false)
     @CreatedAt
     @Column

@@ -49,7 +49,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12 forgot-password">
-                                        <a href="">Forgot password?</a>
+                                        <a href="/forgot-password">Forgot password?</a>
                                     </div>
                                 </div>
 
@@ -80,11 +80,13 @@
         import { createLoader } from '/js/components/loader.js';
         import { createToast } from '/js/components/toast.js';
         import { createHttpClient } from '/js/components/http-client.js';
+        import { createRouter } from '/js/components/router.js';
 
         const AppStorage = createAppStorage();
         const Loader = createLoader(document);
         const Toast = createToast(document);
         const HttpClient = createHttpClient();
+        const Router = createRouter();
 
         const viewLogin = new Vue({
             el: '#viewLogin',
@@ -112,7 +114,7 @@
                         AppStorage.getData().token = response.data.token;
                         AppStorage.saveData()
 
-                        location.href = `${location.origin}`;
+                        Router.navigate('/');
                     }).catch(error => {
                         Loader.dismiss();
                         Toast.showHttpError(error);

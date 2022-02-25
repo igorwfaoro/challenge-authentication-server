@@ -2,6 +2,8 @@ export const CONFIG: {
     HOST: string;
     PORT: number;
 
+    PUBLIC_ADDRESS: string;
+
     DB_HOST: string;
     DB_SCHEMA: string;
     DB_USER: string;
