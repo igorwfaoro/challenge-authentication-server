@@ -44,4 +44,13 @@ AuthController.post('/forgot-password', async (req: Request, res: Response, next
     }
 });
 
+AuthController.post('/reset-password', checkToken, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await authService.resetPassword(req.body, TokenHelper.getPayload(res).userId, TokenHelper.getToken(res));
+        res.json({ ok: true });
+    } catch (error) {
+        next(error);
+    }
+});
+
 export { AuthController };

@@ -9,11 +9,23 @@ export function checkToken(req: Request, res: Response, next: NextFunction) {
     let jwtPayload;
 
     try {
-        jwtPayload = <any>jwt.verify(token.split(' ')[1], CONFIG.JWT_SECRET);
+        const onlyToken = token.split(' ')[1];
+
+        jwtPayload = checkTokenString(onlyToken);
+
         res.locals.jwtPayload = jwtPayload;
+        res.locals.jwtToken = onlyToken;
     } catch (error) {
         next(new AuthException());
     }
 
     next();
 };
+
+export function checkTokenString(token: string): string | jwt.JwtPayload {
+    try {
+        return jwt.verify(token, CONFIG.JWT_SECRET);
+    } catch {
+        throw new AuthException();
+    }
+}

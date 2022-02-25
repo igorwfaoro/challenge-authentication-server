@@ -29,7 +29,7 @@ export class User extends Entity {
     public password: string;
 
     @Column
-    public resetPasswordKey?: string;
+    public resetPasswordToken?: string;
 
     @AllowNull(false)
     @CreatedAt

@@ -6,6 +6,7 @@ import { LoginController } from "./front/controllers/login.controller";
 import { UsersController } from "./api/controllers/users.controller";
 import { SignupController } from "./front/controllers/signup.controller";
 import { ForgotPasswordController } from "./front/controllers/forgot-password.controller";
+import { ResetPasswordController } from "./front/controllers/reset-password.controller";
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/', IndexController);
 router.use('/login', LoginController);
 router.use('/signup', SignupController);
 router.use('/forgot-password', ForgotPasswordController);
+router.use('/reset-password', ResetPasswordController);
 
 export { router };

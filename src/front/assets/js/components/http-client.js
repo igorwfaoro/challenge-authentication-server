@@ -9,23 +9,23 @@ const createHttpClient = () => {
     }
 
     function get(url, options) {
-        const token = _getToken();
+        const token = options?.token || _getToken();
 
         return axios.get(url, {
             ...options,
             headers: {
-                Authorization: token ? `Bearer ${_getToken()}` : ''
+                Authorization: token ? `Bearer ${token}` : ''
             }
         });
     }
 
     function post(url, payload, options) {
-        const token = _getToken();
+        const token = options?.token || _getToken();
 
         return axios.post(url, payload, {
             ...options,
             headers: {
-                Authorization: token ? `Bearer ${_getToken()}` : ''
+                Authorization: token ? `Bearer ${token}` : ''
             }
         });
     }

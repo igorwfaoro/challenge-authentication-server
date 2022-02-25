@@ -12,7 +12,7 @@ import { LoginStrategy } from "./strategies/login.strategy";
 import { UserRegisterInputModel } from "../api/models/input-models/user-register";
 import { ForgotPasswordInputModel } from "../api/models/input-models/forgot-password.input-model";
 import { MessagingService } from './messaging.service';
-import { v4 as uuidV4 } from 'uuid';
+import { ResetPasswordInputModel } from "../api/models/input-models/reset-password.input-model";
 
 @injectable()
 export class AuthService {
@@ -69,7 +69,7 @@ export class AuthService {
         });
 
         if (user) {
-            user.resetPasswordKey = uuidV4();
+            user.resetPasswordToken = this.makeToken(user, { expiresIn: '1h' });
             await user.save();
 
             this._messagingService.sendEmail({
@@ -79,7 +79,7 @@ export class AuthService {
                     <html>
                         <p>You have requested to reset your password.</p>
                         <p>
-                            <a href="${CONFIG.PUBLIC_ADDRESS}/reset-password?key=${user.resetPasswordKey}">Click here</a> to reset your password.
+                            <a href="${CONFIG.PUBLIC_ADDRESS}/reset-password?token=${user.resetPasswordToken}">Click here</a> to reset your password.
                         </p>
                     </html>
                 `
@@ -87,14 +87,32 @@ export class AuthService {
         }
     }
 
-    public makeToken(user: User): string {
+    public async resetPassword(input: ResetPasswordInputModel, userId: number, token: string): Promise<void> {
+
+        const user: User = await User.findOne({
+            where: { id: userId }
+        });
+
+        if (!user)
+            throw new NotFoundException('User not found');
+
+        if (user.resetPasswordToken != token)
+            throw new NotFoundException('Invalid token');
+
+        user.password = bcrypt.hashSync(input.password);
+        user.resetPasswordToken = null;
+
+        await user.save();
+    }
+
+    public makeToken(user: User, options: { expiresIn?: string } = {}): string {
 
         const payload: TokenPayload = { userId: user.id };
 
         const token = jwt.sign(
             payload,
             CONFIG.JWT_SECRET,
-            { expiresIn: "120h" }
+            { expiresIn: options.expiresIn || '120h' }
         );
 
         return token;
