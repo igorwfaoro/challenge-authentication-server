@@ -16,7 +16,7 @@ export class MessagingService {
     public async sendEmail(options: EmailOptions): Promise<any> {
 
         if (!options.subject)
-            options.subject = 'Mensagem de Challenge Authentication Server';
+            options.subject = 'Messaging from IWF Authentication Server';
 
         const transporter = nodemailer.createTransport({
             service: CONFIG.EMAIL_SERVICE,
@@ -37,7 +37,7 @@ export class MessagingService {
             const result = await transporter.sendMail(mailOptions);
             return result;
         } catch (error) {
-            throw new MessagingException('Erro ao enviar e-mail');
+            throw new MessagingException('Error sending e-mail');
         }
     }
 }

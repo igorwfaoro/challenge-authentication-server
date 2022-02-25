@@ -1,21 +1,32 @@
-const AppStorage = {
-    _storageKey: 'storage-app-data',
+let appData = {};
+const STORAGE_KEY = 'storage-app-data';
 
-    data: {},
+const createAppStorage = () => {
 
-    loadData() {
-        AppStorage.data = JSON.parse(localStorage.getItem(AppStorage._storageKey) || '{}');
-        return AppStorage.data;
-    },
+    function loadData() {
+        appData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        return appData;
+    }
 
-    saveData(data = AppStorage.data) {
-        localStorage.setItem(AppStorage._storageKey, JSON.stringify(data));
-    },
+    function saveData(data = appData) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
 
-    clearData() {
-        AppStorage.data = {};
+    function clearData() {
+        appData = {};
         localStorage.clear();
+    }
+
+    function getData() {
+        return appData;
+    }
+
+    return {
+        loadData,
+        saveData,
+        clearData,
+        getData
     }
 }
 
-export { AppStorage };
+export { createAppStorage };

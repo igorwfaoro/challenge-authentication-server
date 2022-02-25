@@ -27,7 +27,7 @@ export class LoginStrategy extends Strategy<LoginInputModel, Promise<UserTokenVi
         });
 
         if (!user)
-            throw new AuthException('Usuário ou senha inválida');
+            throw new AuthException('Invalid email or password');
 
         this.validatePassword(input.password, user.password);
 
@@ -43,6 +43,6 @@ export class LoginStrategy extends Strategy<LoginInputModel, Promise<UserTokenVi
 
     private validatePassword(inputPassword: string, hash: string): void {
         if (!bcrypt.compareSync(inputPassword, hash))
-            throw new AuthException('Usuário ou senha inválida');
+            throw new AuthException('Invalid email or password');
     }
 }

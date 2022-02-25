@@ -1,32 +1,39 @@
-import { AppStorage } from '/js/components/storage.js';
+import { createAppStorage } from '/js/components/storage.js';
 
-const HttpClient = {
+const AppStorage = createAppStorage();
 
-    _getToken() {
-        return AppStorage.data?.token;
-    },
+const createHttpClient = () => {
 
-    get(url, options) {
-        const token = HttpClient._getToken();
+    function _getToken() {
+        return AppStorage.getData()?.token;
+    }
+
+    function get(url, options) {
+        const token = _getToken();
 
         return axios.get(url, {
             ...options,
             headers: {
-                Authorization: token ? `Bearer ${HttpClient._getToken()}` : ''
+                Authorization: token ? `Bearer ${_getToken()}` : ''
             }
         });
-    },
+    }
 
-    post(url, payload, options) {
-        const token = HttpClient._getToken();
+    function post(url, payload, options) {
+        const token = _getToken();
 
         return axios.post(url, payload, {
             ...options,
             headers: {
-                Authorization: token ? `Bearer ${HttpClient._getToken()}` : ''
+                Authorization: token ? `Bearer ${_getToken()}` : ''
             }
         });
     }
+
+    return {
+        get,
+        post
+    }
 }
 
-export { HttpClient };
+export { createHttpClient };

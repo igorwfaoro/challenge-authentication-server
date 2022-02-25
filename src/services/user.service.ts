@@ -17,7 +17,7 @@ export class UserService {
         });
 
         if (!user)
-            throw new NotFoundException('Usuário não encontrado');
+            throw new NotFoundException('User not found');
 
         return user;
     }
@@ -27,7 +27,7 @@ export class UserService {
         const user = await this.getEntityById(userId);
 
         if (!user)
-            throw new NotFoundException('Usuário não encontrado');
+            throw new NotFoundException('User not found');
 
         return UserViewModel.fromEntity(user);
     }

@@ -2,7 +2,7 @@ import { CustomException } from "./setup/custom.exception";
 
 export class UserException extends CustomException {
 
-    constructor(message = 'Algo errado...', statusCode = 400) {
+    constructor(message = 'Something wrong...', statusCode = 400) {
         super(statusCode, message);
     }
 }

@@ -29,10 +29,18 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 
 <script type="module">
-      import { AppStorage } from '/js/components/storage.js';
-      
+      import { createAppStorage } from '/js/components/storage.js';
+      import { createToast } from '/js/components/toast.js';
+      import { createLoader } from '/js/components/loader.js';
+
+      const AppStorage = createAppStorage();
+      const Toast = createToast(document);
+      const Loader = createLoader(document);
+
       AppStorage.loadData();
-      
+      Toast.createElement();
+      Loader.createElement();
+
       const lang = String(window.navigator.userLanguage || window.navigator.language);
       moment.locale(lang);
 </script>

@@ -1,0 +1,32 @@
+.bg {
+    background-image: url("/images/background.png");
+    background-color: var(--blue-700);
+}
+
+.content {
+    height: 100%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 36px;
+    gap: 24px;
+
+    h1 {
+        margin: 0;
+    }
+
+    .user-data {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+
+        .name {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        
+    }
+}

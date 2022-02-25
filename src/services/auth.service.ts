@@ -50,7 +50,7 @@ export class AuthService {
         });
 
         if (!user)
-            throw new NotFoundException('Usuário não encontrado');
+            throw new NotFoundException('User not found');
 
         const token = this.makeToken(user);
 

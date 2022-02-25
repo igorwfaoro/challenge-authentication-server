@@ -48,12 +48,18 @@
                                                    :required="form.password.required">
                                         </div>
                                     </div>
+                                    <div class="col-12 forgot-password">
+                                        <a href="">Forgot password?</a>
+                                    </div>
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-12 buttons">
                                         <button type="submit"
                                                 class="btn btn-light">Login</button>
+
+                                        <button type="submit"
+                                                class="btn btn-light signup">Signup</button>
                                     </div>
                                 </div>
                             </form>
@@ -70,10 +76,15 @@
 
     <script type="module">
 
-        import { AppStorage } from '/js/components/storage.js';
-        import { Loader } from '/js/components/loader.js';
-        import { Toast } from '/js/components/toast.js';
-        import { HttpClient } from '/js/components/http-client.js';
+        import { createAppStorage } from '/js/components/storage.js';
+        import { createLoader } from '/js/components/loader.js';
+        import { createToast } from '/js/components/toast.js';
+        import { createHttpClient } from '/js/components/http-client.js';
+
+        const AppStorage = createAppStorage();
+        const Loader = createLoader(document);
+        const Toast = createToast(document);
+        const HttpClient = createHttpClient();
 
         const viewLogin = new Vue({
             el: '#viewLogin',
@@ -97,8 +108,8 @@
                     }).then(response => {
                         Loader.dismiss();
 
-                        AppStorage.data.user = response.data.user;
-                        AppStorage.data.token = response.data.token;
+                        AppStorage.getData().user = response.data.user;
+                        AppStorage.getData().token = response.data.token;
                         AppStorage.saveData()
 
                         location.href = `${location.origin}`;

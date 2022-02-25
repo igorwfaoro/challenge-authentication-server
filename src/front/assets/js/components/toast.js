@@ -1,5 +1,11 @@
-const Toast = {
-    show(message, type) {
+const ELEMENT_ID = 'toast';
+const DURATION = 3000;
+
+/**
+ * @param {Document} document 
+ */
+const createToast = (document) => {
+    function show(message, type) {
 
         let typeIcon = '';
         switch (type) {
@@ -17,12 +23,28 @@ const Toast = {
                 break;
         }
 
-        alert(`${message}${typeIcon}`);
-    },
+        const el = document.getElementById(ELEMENT_ID)
+        el.innerText = `${message}${typeIcon}`;
+        el.classList.add('show');
 
-    showHttpError(error) {
-        Toast.show(error?.response?.data?.message || 'Something wrong...', 'error');
+        setTimeout(() => el.classList.remove('show'), DURATION);
+    }
+
+    function showHttpError(error) {
+        show(error?.response?.data?.message || 'Something wrong...', 'error');
+    }
+
+    function createElement() {
+        const el = document.createElement('div');
+        el.id = ELEMENT_ID;
+        document.body.appendChild(el);
+    }
+
+    return {
+        show,
+        showHttpError,
+        createElement
     }
 }
 
-export { Toast };
+export { createToast };

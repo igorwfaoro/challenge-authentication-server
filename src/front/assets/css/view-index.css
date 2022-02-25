@@ -1,0 +1,1 @@
+.bg{background-image:url("/images/background.png");background-color:var(--blue-700)}.content{height:100%;color:#fff;display:flex;flex-direction:column;align-items:center;padding-top:36px;gap:24px}.content h1{margin:0}.content .user-data{display:flex;flex-direction:column;align-items:center;gap:2px}.content .user-data .name{font-weight:bold;font-size:18px}

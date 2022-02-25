@@ -11,14 +11,25 @@
 
     <div id="viewIndex">
 
-        <div class="content"
-             v-if="loggedUser">
-            <div class="name">{{ loggedUser.name }}</div>
-            <div class="email">{{ loggedUser.email }}</div>
-            <div class="created-at">{{ loggedUser.createdAt }}</div>
-            <div class="logout">
-                <button v-on:click="logout">Logout</button>
+        <div class="bg">
+
+            <div class="content"
+                 v-if="loggedUser">
+
+                <h1>Welcome {{ loggedUser.name }}!</h1>
+
+                <div class="user-data">
+                    <div class="name">{{ loggedUser.name }}</div>
+                    <div class="email">{{ loggedUser.email }}</div>
+                    <div class="created-at">Created {{ loggedUser.createdAtFormatted }}</div>
+                </div>
+
+                <div class="logout">
+                    <button class="btn btn-light"
+                            v-on:click="logout">Logout</button>
+                </div>
             </div>
+
         </div>
 
     </div>
@@ -27,10 +38,15 @@
 
     <script type="module">
 
-        import { AppStorage } from '/js/components/storage.js';
-        import { Loader } from '/js/components/loader.js';
-        import { Toast } from '/js/components/toast.js';
-        import { HttpClient } from '/js/components/http-client.js';
+        import { createAppStorage } from '/js/components/storage.js';
+        import { createLoader } from '/js/components/loader.js';
+        import { createToast } from '/js/components/toast.js';
+        import { createHttpClient } from '/js/components/http-client.js';
+
+        const AppStorage = createAppStorage();
+        const Loader = createLoader(document);
+        const Toast = createToast(document);
+        const HttpClient = createHttpClient();
 
         const viewIndex = new Vue({
             el: '#viewIndex',
@@ -40,7 +56,7 @@
             },
 
             created() {
-                if (!AppStorage.data?.token) {
+                if (!AppStorage.getData()?.token) {
                     location.href = `${location.origin}/login`;
                     return;
                 }
@@ -48,7 +64,10 @@
                 Loader.open();
                 HttpClient.get('/api/users/logged').then(response => {
                     Loader.dismiss();
-                    this.loggedUser = response.data;
+                    this.loggedUser = {
+                        ...response.data,
+                        createdAtFormatted: moment.utc(response.data.createdAt).local().calendar().toLowerCase()
+                    };
                 }).catch(error => {
                     Loader.dismiss();
                     Toast.showHttpError(error);

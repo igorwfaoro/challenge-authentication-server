@@ -10,7 +10,7 @@ export function onError(error, req, res, next) {
         message = error.message;
         statusCode = error.statusCode;
     } else {
-        message = 'Algo errado 🙁';
+        message = 'Something wrong... 🙁';
         statusCode = 400;
     }
 
