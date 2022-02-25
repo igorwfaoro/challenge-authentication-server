@@ -1,8 +1,8 @@
 import { createAppStorage } from '/js/components/storage.js';
 
-const AppStorage = createAppStorage();
-
 const createHttpClient = () => {
+
+    const AppStorage = createAppStorage();
 
     function _getToken() {
         return AppStorage.getData()?.token;

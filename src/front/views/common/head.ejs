@@ -21,12 +21,21 @@
       href="/css/main.css">
 
 <meta name="theme-color"
-      content="#004999">
+      content="#12192e">
+
+<script>
+      const vueScript = document.createElement('script');
+      vueScript.src = location.hostname == 'localhost'
+            ? 'https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'
+            : 'https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js';
+      document.head.appendChild(vueScript);
+</script>
 
 <script src="/js/moment/moment.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script>
 
 <script type="module">
       import { createAppStorage } from '/js/components/storage.js';

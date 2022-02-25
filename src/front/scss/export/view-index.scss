@@ -13,7 +13,8 @@
     padding-top: 36px;
     gap: 24px;
 
-    h1 {
+    .welcome {
+        text-align: center;
         margin: 0;
     }
 
@@ -27,7 +28,5 @@
             font-weight: bold;
             font-size: 18px;
         }
-
-        
     }
 }

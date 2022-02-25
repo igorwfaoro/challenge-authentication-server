@@ -28,7 +28,8 @@
                             </div>
 
                             <div class="row"
-                                 v-if="error">
+                                 style="display: none"
+                                 :style="{ display: error ? 'block' : 'none' }">
                                 <div class="col-12">
                                     <div class="error">❌ {{ error }}</div>
                                 </div>
@@ -108,7 +109,6 @@
 
             created() {
                 this.error = Router.getUrlParam('error');
-                console.log(this.error)
             },
 
             methods: {

@@ -14,9 +14,11 @@
         <div class="bg">
 
             <div class="content"
-                 v-if="loggedUser">
+                 v-if="loggedUser"
+                 style="display: none"
+                 :style="{ display: loggedUser ? 'flex' : 'none' }">
 
-                <h1>Welcome {{ loggedUser.name }}!</h1>
+                <h1 class="welcome">Welcome {{ loggedUser.name }}!</h1>
 
                 <div class="user-data">
                     <div class="name">{{ loggedUser.name }}</div>
@@ -43,12 +45,14 @@
         import { createToast } from '/js/components/toast.js';
         import { createHttpClient } from '/js/components/http-client.js';
         import { createRouter } from '/js/components/router.js';
+        import { createAuth } from '/js/components/auth.js';
 
         const AppStorage = createAppStorage();
         const Loader = createLoader(document);
         const Toast = createToast(document);
         const HttpClient = createHttpClient();
         const Router = createRouter();
+        const Auth = createAuth(document);
 
         const viewIndex = new Vue({
             el: '#viewIndex',
@@ -58,42 +62,19 @@
             },
 
             created() {
-                if (!AppStorage.getData()?.token) {
-                    Router.navigate('/login');
-                    return;
-                }
-
-                Loader.open();
-                HttpClient.post('/api/auth/refresh').then(response => {
-                    Loader.dismiss();
-                    this.getLoggedUser();
-                }).catch(error => {
-                    Loader.dismiss();
-                    Toast.showHttpError(error);
-                    setTimeout(() => this.logout('You must be logged in to access'), 2000);
+                Auth.verify().then(() => {
+                    const user = AppStorage.getData().user;
+                    this.loggedUser = {
+                        ...user,
+                        createdAtFormatted: moment.utc(user.createdAt).local().calendar().toLowerCase()
+                    };
                 });
             },
 
             methods: {
                 logout(error) {
-                    AppStorage.clearData();
-                    Router.navigate(`/login${error ? '?error=' + error : ''}`);
-                },
-
-                getLoggedUser() {
-
-                    Loader.open();
-                    HttpClient.get('/api/users/logged').then(response => {
-                        Loader.dismiss();
-                        this.loggedUser = {
-                            ...response.data,
-                            createdAtFormatted: moment.utc(response.data.createdAt).local().calendar().toLowerCase()
-                        };
-                    }).catch(error => {
-                        Loader.dismiss();
-                        Toast.showHttpError(error);
-                    });
-                },
+                    Auth.logout(error);
+                }
             }
         });
     </script>
